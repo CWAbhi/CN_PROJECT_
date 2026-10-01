@@ -1,0 +1,2 @@
+# Keep certs directory in repository
+# Certificates and keys are generated using create_certificate.command

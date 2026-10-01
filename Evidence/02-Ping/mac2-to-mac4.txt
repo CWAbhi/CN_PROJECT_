@@ -1,0 +1,17 @@
+# Ping from Mac 2 (10.7.21.150) to Mac 4 / Backend B (10.7.5.29)
+# Collected: 2026-10-01T14:17 IST
+# Result: SUCCESS (high latency)
+
+PING 10.7.5.29 (10.7.5.29): 56 data bytes
+Request timeout for icmp_seq 0
+Request timeout for icmp_seq 1
+64 bytes from 10.7.5.29: icmp_seq=0 ttl=32 time=2471.242 ms
+64 bytes from 10.7.5.29: icmp_seq=1 ttl=32 time=1466.189 ms
+64 bytes from 10.7.5.29: icmp_seq=2 ttl=32 time=461.077 ms
+
+--- 10.7.5.29 ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 461.077/1466.169/2471.242/820.646 ms
+
+# NOTE: All packets arrived but with very high latency (461ms - 2471ms).
+# This is typical of Wi-Fi congestion or distance. No packet loss.

@@ -1,0 +1,31 @@
+# Mac 2 (Edge / nginx) - Network Information
+# Collected: 2026-10-01T14:15 IST
+# Hostname: Abhi-MacBook-Pro-2.local
+
+=== hostname ===
+Abhi-MacBook-Pro-2.local
+
+=== Active Interface: en0 (Wi-Fi) ===
+IP Address: 10.7.21.150
+Subnet Mask: 255.255.224.0 (0xffffe000 = /19)
+Broadcast: 10.7.31.255
+Wi-Fi MAC Address: a2:b0:ad:72:36:e6
+Wi-Fi ID: 10:9f:41:bf:7b:04
+
+=== Default Route ===
+Gateway: 10.7.0.1
+Interface: en0
+
+=== DHCP Configuration (from networksetup -getinfo Wi-Fi) ===
+DHCP Configuration
+IP address: 10.7.21.150
+Subnet mask: 255.255.224.0
+Router: 10.7.0.1
+Client ID: 
+IPv6: Automatic
+IPv6 IP address: none
+IPv6 Router: none
+
+=== Role ===
+Mac 2: nginx Edge / Reverse Proxy / Load Balancer / TLS
+Service: HTTPS on port 8443

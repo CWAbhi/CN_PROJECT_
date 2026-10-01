@@ -1,0 +1,36 @@
+# macOS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Nginx runtime logs and pid files
+*.log
+nginx.pid
+nginx-access.log
+nginx-error.log
+cache/
+Mac 2 - Edge/cache/
+
+# Temporary test configs
+/tmp/cn-phase1*
+*.tmp
+
+# Secrets, TLS Private Keys and Certificates
+*.key
+*.pem
+*.crt
+*.csr
+*.srl
+*.ext
+*.pfx
+*.p12
+ca.cnf
+Mac 2 - Edge/certs/*
+!Mac 2 - Edge/certs/.gitkeep

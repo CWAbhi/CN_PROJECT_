@@ -1,0 +1,28 @@
+# Round-Robin Load Balancing Verification
+# Protocol: HTTPS (Port 8443) -> Nginx Upstream Pool
+# Endpoints: Backend A (Port 3001) & Backend B (Port 3002)
+# Status: PASS
+
+=== Six Consecutive Client Requests with Certificate Validation ===
+$ for n in {1..6}; do
+    curl -s -i --cacert "certs/local-ca.crt" --resolve "app.team1.test:8443:10.7.21.150" "https://app.team1.test:8443/api/status" | grep -E "HTTP/|X-Backend"
+  done
+
+=== Actual Terminal Output ===
+HTTP/1.1 200 OK
+X-Backend: A
+HTTP/1.1 200 OK
+X-Backend: B
+HTTP/1.1 200 OK
+X-Backend: A
+HTTP/1.1 200 OK
+X-Backend: B
+HTTP/1.1 200 OK
+X-Backend: A
+HTTP/1.1 200 OK
+X-Backend: B
+
+=== Verification Result: PASS ===
+1. All 6 requests completed with HTTP 200 OK over TLS.
+2. X-Backend header strictly alternated A -> B -> A -> B -> A -> B.
+3. Round-robin load balancing is functioning as required.

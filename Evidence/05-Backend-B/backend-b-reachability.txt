@@ -1,0 +1,36 @@
+# Backend B Reachability & Service Test from Mac 2 (10.7.21.150)
+# Target: Mac 4 (10.7.5.29:3002)
+# Collected: 2026-10-01T14:17 IST & 14:21 IST
+# Role: Verifying Backend B connectivity
+
+=== ICMP Ping Test ===
+$ ping -c 3 10.7.5.29
+PING 10.7.5.29 (10.7.5.29): 56 data bytes
+Request timeout for icmp_seq 0
+Request timeout for icmp_seq 1
+64 bytes from 10.7.5.29: icmp_seq=0 ttl=32 time=2471.242 ms
+64 bytes from 10.7.5.29: icmp_seq=1 ttl=32 time=1466.189 ms
+64 bytes from 10.7.5.29: icmp_seq=2 ttl=32 time=461.077 ms
+
+--- 10.7.5.29 ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 461.077/1466.169/2471.242/820.646 ms
+
+=== HTTP Service Reachability Test ===
+$ curl -v --connect-timeout 3 http://10.7.5.29:3002/health
+* Trying 10.7.5.29:3002...
+* ipv4 connect timeout after 2998ms, move on!
+* Failed to connect to 10.7.5.29 port 3002 after 3003 ms: Timeout was reached
+* Closing connection
+curl: (28) Failed to connect to 10.7.5.29 port 3002 after 3003 ms: Timeout was reached
+
+=== Analysis & Root Cause ===
+1. Mac 4 (10.7.5.29) is alive and connected to LAN (0.0% ICMP packet loss).
+2. HTTP requests to port 3002 timed out.
+3. Root Cause: Backend B process (`backend_b.py`) is not currently running on Mac 4, or macOS firewall is blocking port 3002.
+4. Code Verification:
+   The backend code `Mac 4 - Backend B/backend_b.py` has been syntax-checked and verified valid (uses standard library http.server on port 3002).
+5. Required Action on Mac 4:
+   cd "/path/to/Mac 4 - Backend B"
+   python3 backend_b.py
+   (or double-click start_backend_b.command)

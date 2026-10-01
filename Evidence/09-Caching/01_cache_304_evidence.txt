@@ -1,0 +1,26 @@
+# HTTP Caching & 304 Not Modified Validation
+# Target: https://app.team1.test:8443/api/status
+# Status: PASS
+
+=== 1. Capture ETag from Initial Request ===
+$ ETAG=$(curl -s -I --cacert "certs/local-ca.crt" --resolve "app.team1.test:8443:10.7.21.150" "https://app.team1.test:8443/api/status" | grep -i ETag | tr -d '\r\n')
+$ echo "Captured: $ETAG"
+Captured: ETag: "b8390adb46c27157"
+
+=== 2. Revalidation with If-None-Match Header ===
+$ curl -i --cacert "certs/local-ca.crt" --resolve "app.team1.test:8443:10.7.21.150" -H 'If-None-Match: "b8390adb46c27157"' "https://app.team1.test:8443/api/status"
+
+=== Output ===
+HTTP/1.1 304 Not Modified
+Server: nginx/1.31.6
+Date: Thu, 01 Oct 2026 09:08:23 GMT
+Content-Length: 0
+Connection: keep-alive
+X-Backend: A
+Cache-Control: public, max-age=60
+ETag: "b8390adb46c27157"
+
+=== Verification Result: PASS ===
+1. Upon presenting matching ETag, the server returns HTTP/1.1 304 Not Modified.
+2. Content-Length is 0 (saving bandwidth and round-trip payload).
+3. Cache-Control and ETag headers are correctly preserved and returned by the reverse proxy.

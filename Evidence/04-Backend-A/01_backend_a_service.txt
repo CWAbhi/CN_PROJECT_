@@ -1,0 +1,42 @@
+# Backend A Service Verification
+# Host: 0.0.0.0 (Port 3001)
+# Status: PASS
+
+=== 1. Root Endpoint Test ===
+$ curl -i http://127.0.0.1:3001/
+HTTP/1.1 200 OK
+Server: CN-Backend-A/1.0 Python/3.9.6
+Date: Thu, 01 Oct 2026 09:06:59 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 68
+X-Backend: A
+Cache-Control: public, max-age=60
+ETag: "97ea8a54d580436a"
+
+{"backend":"A","message":"Backend A is running","service":"Mac 3"}
+
+=== 2. API Status Endpoint Test ===
+$ curl -i http://127.0.0.1:3001/api/status
+HTTP/1.1 200 OK
+Server: CN-Backend-A/1.0 Python/3.9.6
+Date: Thu, 01 Oct 2026 09:06:59 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 29
+X-Backend: A
+Cache-Control: public, max-age=60
+ETag: "b8390adb46c27157"
+
+{"backend":"A","status":"ok"}
+
+=== 3. Conditional Cache Validation (304 Not Modified) ===
+$ curl -i -H 'If-None-Match: "b8390adb46c27157"' http://127.0.0.1:3001/api/status
+HTTP/1.1 304 Not Modified
+Server: CN-Backend-A/1.0 Python/3.9.6
+Date: Thu, 01 Oct 2026 09:06:59 GMT
+X-Backend: A
+Cache-Control: public, max-age=60
+ETag: "b8390adb46c27157"
+Content-Length: 0
+
+=== Result: PASS ===
+Backend A is fully operational, producing proper JSON bodies, X-Backend: A headers, and 304 Not Modified caching responses.

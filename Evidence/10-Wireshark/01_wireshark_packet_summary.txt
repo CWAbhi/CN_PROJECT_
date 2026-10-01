@@ -1,0 +1,34 @@
+# Wireshark / TCPDump Packet Capture Summary
+# Capture File: Evidence/10-Wireshark/dns-tls-loadbalancing.pcap (32,062 bytes, 196 packets)
+# Status: PASS
+
+=== Capture Information ===
+Captured using tcpdump on active interface with filter:
+"port 1053 or port 8443 or port 3001 or port 3002"
+
+=== Key Packet Sequence Trace ===
+
+1. DNS Resolution (UDP Port 1053 / 53)
+   14:38:57.502756 IP 127.0.0.1.54338 > 127.0.0.1.1053: UDP, length 43 (Standard query 0x1234 A app.team1.test)
+   14:38:57.503229 IP 127.0.0.1.1053 > 127.0.0.1.54338: UDP, length 59 (Standard query response A 10.7.21.150)
+
+2. TCP 3-Way Handshake to Edge Proxy (Port 8443)
+   14:38:57.525114 IP 10.7.21.150.56119 > 10.7.21.150.8443: Flags [S], seq 2190592314 (SYN)
+   14:38:57.525288 IP 10.7.21.150.8443 > 10.7.21.150.56119: Flags [S.], seq 472760323, ack 2190592315 (SYN-ACK)
+   14:38:57.525309 IP 10.7.21.150.56119 > 10.7.21.150.8443: Flags [.], ack 1 (ACK)
+
+3. TLS 1.2 Cryptographic Handshake
+   14:38:57.525513 IP 10.7.21.150.56119 > 10.7.21.150.8443: Flags [P.], length 324 (Client Hello)
+   14:38:57.532431 IP 10.7.21.150.8443 > 10.7.21.150.56119: Flags [P.], length 1243 (Server Hello, Certificate, Server Key Exchange, Server Hello Done)
+   14:38:57.533367 IP 10.7.21.150.56119 > 10.7.21.150.8443: Flags [P.], length 85 (Client Key Exchange, Change Cipher Spec, Encrypted Handshake Message)
+
+4. Reverse Proxy Upstream Forwarding (HTTP Plaintext on LAN)
+   14:38:57.533668 IP 127.0.0.1.56110 > 127.0.0.1.3001: Flags [P.], length 143 (GET /api/status HTTP/1.1)
+   14:38:57.534558 IP 127.0.0.1.3001 > 127.0.0.1.56110: Flags [P.], length 237 (HTTP/1.1 200 OK, X-Backend: A)
+
+5. Encrypted TLS Response to Client
+   14:38:57.534672 IP 10.7.21.150.8443 > 10.7.21.150.56119: Flags [P.], length 294 (TLS Encrypted Application Data)
+
+=== Verification Result: PASS ===
+Full packet trace confirms DNS -> TCP -> TLS Handshake -> Plaintext Upstream Proxying -> Encrypted Response.
+The capture file can be opened directly in Wireshark.

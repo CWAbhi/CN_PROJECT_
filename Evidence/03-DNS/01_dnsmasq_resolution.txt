@@ -1,0 +1,29 @@
+# DNS Resolution Test — Private Authoritative DNS
+# Target: app.team1.test and api.team1.test
+# Daemon: dnsmasq 2.93
+# Status: PASS
+
+=== 1. Starting dnsmasq with Team 1 Domain Configuration ===
+$ dnsmasq --no-daemon --conf-file=dnsmasq.conf
+Oct  1 14:37:23 dnsmasq[45983]: started, version 2.93 cachesize 150
+Oct  1 14:37:23 dnsmasq[45983]: using nameserver 10.7.0.1#53
+Oct  1 14:37:23 dnsmasq[45983]: using only locally-known addresses for team1.test
+Oct  1 14:37:23 dnsmasq[45983]: read /etc/hosts - 3 names
+
+=== 2. DNS Query: app.team1.test ===
+$ dig @127.0.0.1 -p 1053 app.team1.test +short
+10.7.21.150
+
+Oct  1 14:37:24 dnsmasq[45983]: query[A] app.team1.test from 127.0.0.1
+Oct  1 14:37:24 dnsmasq[45983]: config app.team1.test is 10.7.21.150
+
+=== 3. DNS Query: api.team1.test ===
+$ dig @127.0.0.1 -p 1053 api.team1.test +short
+10.7.21.150
+
+Oct  1 14:37:24 dnsmasq[45983]: query[A] api.team1.test from 127.0.0.1
+Oct  1 14:37:24 dnsmasq[45983]: config api.team1.test is 10.7.21.150
+
+=== Result: PASS ===
+Both app.team1.test and api.team1.test resolve directly to Mac 2's Edge IP (10.7.21.150).
+Clients connect solely to the Edge proxy; upstream backend IPs are completely hidden.

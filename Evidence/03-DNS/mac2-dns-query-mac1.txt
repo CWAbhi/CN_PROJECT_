@@ -1,0 +1,29 @@
+# DNS Query Test from Mac 2 (10.7.21.150) to Mac 1 (10.3.3.225)
+# Collected: 2026-10-01T14:17 IST & 14:21 IST
+# Role: Testing DNS resolution for team1.test domain
+
+=== Query: app.team1.test ===
+$ dig @10.3.3.225 app.team1.test +time=2 +tries=1
+
+; <<>> DiG 9.10.6 <<>> @10.3.3.225 app.team1.test +time=2 +tries=1
+; (1 server found)
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+=== Query: api.team1.test ===
+$ dig @10.3.3.225 api.team1.test +time=2 +tries=1
+
+; <<>> DiG 9.10.6 <<>> @10.3.3.225 api.team1.test +time=2 +tries=1
+; (1 server found)
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+=== Analysis & Root Cause ===
+1. Mac 1 (10.3.3.225) is reachable via ICMP ping (avg RTT 64.1ms, 0% packet loss).
+2. However, DNS queries on UDP/TCP port 53 timed out.
+3. Root Cause: dnsmasq is not currently running on Mac 1, or macOS firewall / packet filter is blocking port 53.
+4. Required Action on Mac 1:
+   cd "/path/to/Mac 1 - DNS"
+   python3 render_dns.py
+   sudo dnsmasq -C dnsmasq.conf -d
+   (or double-click start_dns.command)

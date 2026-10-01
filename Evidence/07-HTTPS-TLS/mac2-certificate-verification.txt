@@ -1,0 +1,37 @@
+# TLS Certificate Verification on Mac 2
+# Path: Mac 2 - Edge/certs/
+# Collected: 2026-10-01T14:18 IST
+# Role: Phase 1 TLS/HTTPS Requirement Verification
+
+=== 1. Certificate Subject & Issuer ===
+$ openssl x509 -in "Mac 2 - Edge/certs/server.crt" -noout -subject -issuer
+subject= /CN=app.team1.test
+issuer= /CN=CN Project Phase 1 Local CA
+
+=== 2. Subject Alternative Names (SAN) ===
+$ openssl x509 -in "Mac 2 - Edge/certs/server.crt" -noout -text | grep -A 2 "Subject Alternative Name"
+            X509v3 Subject Alternative Name: 
+                DNS:app.team1.test, DNS:api.team1.test
+
+=== 3. Validity Dates ===
+$ openssl x509 -in "Mac 2 - Edge/certs/server.crt" -noout -dates
+notBefore=Sep 30 10:50:39 2026 GMT
+notAfter=Sep 30 10:50:39 2027 GMT
+
+=== 4. SHA-256 Fingerprint ===
+SHA256 Fingerprint=E3:E8:E2:9F:94:BF:D5:62:9F:73:21:A2:F5:BA:72:D9:0B:FA:A9:B7:51:AE:1A:8D:86:14:A7:56:77:E2:86:0F
+
+=== 5. CA Chain Verification ===
+$ openssl verify -CAfile "Mac 2 - Edge/certs/local-ca.crt" "Mac 2 - Edge/certs/server.crt"
+/Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge/certs/server.crt: OK
+
+=== 6. CA Certificate Details ===
+$ openssl x509 -in "Mac 2 - Edge/certs/local-ca.crt" -noout -subject -issuer -dates
+subject= /CN=CN Project Phase 1 Local CA
+issuer= /CN=CN Project Phase 1 Local CA
+notBefore=Sep 30 10:50:38 2026 GMT
+notAfter=Sep 30 10:50:38 2036 GMT
+
+=== Verification Status: PASS ===
+The server certificate and private key are correctly issued by the project local CA, include both required SANs (app.team1.test, api.team1.test), and pass OpenSSL cryptographic chain validation.
+Clients need to trust `local-ca.crt` in their system keychain or provide `--cacert certs/local-ca.crt` to curl.

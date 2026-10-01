@@ -1,0 +1,12 @@
+# Ping from Mac 2 (10.7.21.150) to Mac 1 / DNS (10.3.3.225)
+# Collected: 2026-10-01T14:16 IST
+# Result: SUCCESS
+
+PING 10.3.3.225 (10.3.3.225): 56 data bytes
+64 bytes from 10.3.3.225: icmp_seq=0 ttl=63 time=24.444 ms
+64 bytes from 10.3.3.225: icmp_seq=1 ttl=63 time=67.478 ms
+64 bytes from 10.3.3.225: icmp_seq=2 ttl=63 time=100.645 ms
+
+--- 10.3.3.225 ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 24.444/64.189/100.645/31.196 ms

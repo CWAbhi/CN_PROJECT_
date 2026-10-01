@@ -1,0 +1,15 @@
+# Ping from Mac 2 (10.7.21.150) to Mac 3 / Backend A (10.7.16.120)
+# Collected: 2026-10-01T14:27 IST
+# Result: SUCCESS
+
+PING 10.7.16.120 (10.7.16.120): 56 data bytes
+64 bytes from 10.7.16.120: icmp_seq=0 ttl=64 time=28.876 ms
+64 bytes from 10.7.16.120: icmp_seq=1 ttl=64 time=13.158 ms
+64 bytes from 10.7.16.120: icmp_seq=2 ttl=64 time=37.982 ms
+64 bytes from 10.7.16.120: icmp_seq=3 ttl=64 time=14.457 ms
+
+--- 10.7.16.120 ping statistics ---
+4 packets transmitted, 4 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 13.158/23.618/37.982/10.336 ms
+
+# Status: Mac 3 (10.7.16.120) is fully online and reachable on the LAN.

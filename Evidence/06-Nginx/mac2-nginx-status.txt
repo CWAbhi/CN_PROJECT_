@@ -1,0 +1,46 @@
+# Nginx Status & Environment on Mac 2 (10.7.21.150)
+# Collected: 2026-10-01T14:18 IST
+# Role: Edge / Reverse Proxy / TLS Termination / Load Balancer
+
+=== Binary & Package Manager Check ===
+$ which nginx
+nginx not found
+
+$ which brew
+brew not found
+
+$ ls /opt/homebrew/bin/nginx /usr/local/bin/nginx
+ls: /opt/homebrew/bin/nginx: No such file or directory
+ls: /usr/local/bin/nginx: No such file or directory
+
+$ xcode-select -p
+/Library/Developer/CommandLineTools (Installed)
+
+=== Nginx Configuration Generation ===
+$ cd "/Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge" && python3 render_nginx.py
+Wrote /Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge/nginx.conf
+Generated configuration details:
+- Listening Port: 8443 ssl
+- Server Names: app.team1.test, api.team1.test
+- SSL Certificate: /Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge/certs/server.crt
+- SSL Key: /Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge/certs/server.key
+- Upstream backend_pool:
+    server 10.7.7.233:3001;  # Mac 3 Backend A
+    server 10.7.5.29:3002;   # Mac 4 Backend B
+- Proxy Cache Path: /Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge/cache levels=1:2 keys_zone=CN_CACHE:10m max_size=100m inactive=60m use_temp_path=off
+
+=== Port 8443 Listener Check ===
+$ sudo lsof -nP -iTCP:8443 -sTCP:LISTEN
+Nothing on 8443
+
+=== Analysis & Action Required ===
+Mac 2 requires nginx to be installed to serve as the edge reverse proxy.
+To install nginx on Mac 2:
+1. Install Homebrew:
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+2. Install Nginx:
+   brew install nginx
+3. Start Edge reverse proxy:
+   cd "/Users/abhijeetdey/Desktop/CN_Project/Mac 2 - Edge"
+   ./start_edge.command
+   (or nginx -p "$PWD" -c "$PWD/nginx.conf")
